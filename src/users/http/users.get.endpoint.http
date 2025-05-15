@@ -6,4 +6,4 @@ GET http://localhost:3000/users
 GET http://localhost:3000/users/1234/
 
 
-GET http://localhost:3000/users/123451?limit=10&offset=20
+GET http://localhost:3000/users/?limit=12&page=1
