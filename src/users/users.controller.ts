@@ -37,11 +37,7 @@ export class UsersController {
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
   ) {
-    console.log('limit:', limit);
-    console.log('getUserParamDto:', getUserParamDto);
-
-    console.log('page:', page);
-    return 'You sent a GET request to users endpoint';
+    return this.usersService.findAll(getUserParamDto, limit, page);
   }
   @Get('/:id')
   public getUserById(@Param() params: any, @Query() query: any) {
