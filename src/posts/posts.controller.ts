@@ -23,20 +23,28 @@ export class PostsController {
   }
 
   @ApiOperation({
-    summary: 'Creates a new blog post',
-
+    summary: 'Creates a new post for the blog.',
   })
   @ApiResponse({
     status: 201,
-    description: 'You get a 201 response if your post is created successfully',
+    description:
+      'You get a success 201 response if the post is created successfully',
   })
   @Post()
   public createPost(@Body() createPostDto: CreatePostDto) {
     console.log(createPostDto);
   }
 
+  @ApiOperation({
+    summary: 'Updates and existing blog post in the database.',
+  })
+  @ApiResponse({
+    status: 200,
+    description:
+      'You get a success 20o response if the post is updated successfully',
+  })
   @Patch()
-  public updatePost(@Body() patchPostDto: PatchPostDto) {
-    console.log(patchPostDto);
+  public updatePost(@Body() patchPostsDto: PatchPostDto) {
+    console.log(patchPostsDto);
   }
 }
