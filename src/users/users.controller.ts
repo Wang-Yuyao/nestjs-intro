@@ -28,6 +28,7 @@ export class UsersController {
   {}
 
 
+
   @Get()
   public getAllUsers() {
     return 'You have sent a GET request to /users (no ID)';
@@ -60,20 +61,15 @@ export class UsersController {
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
   ) {
-    return this.usersService.findAll(getUserParamDto, limit, page);
+    return console.log('')
   }
 
   @Post()
   public createUsers(
     @Body() createUserDto: CreateUserDto,
-    @Headers() headers: any,
-    @Ip() ip: any,
   ) {
-    console.log(createUserDto instanceof CreateUserDto);
-    console.log(headers);
-    console.log(ip);
-
-    return 'You have sent a post request to users endpoint';
+    console.log(createUserDto)
+    return this.usersService.createUser(createUserDto);
   }
 
   @Patch()

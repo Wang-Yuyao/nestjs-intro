@@ -1,6 +1,10 @@
 import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { GetUsersParamsDto } from "../dtos/get-users-param.dto";
 import { AuthService } from "src/auth/providers/auth.service";
+import { Repository } from "typeorm";
+import { User } from "../users.entity";
+import { InjectRepository } from "@nestjs/typeorm";
+import { CreateUserDto } from "../dtos/create-user.dto";
 
 /**
  * Class to connect to Users table and perform bussiness operations
@@ -10,35 +14,45 @@ export class UsersService{
 
 /**
  * constructor
- * @param authService 
  */
   constructor(
-    @Inject(forwardRef(()=> AuthService))
-    private readonly authService: AuthService
+    @InjectRepository(User)
+    private usersRespository: Repository<User>
   ){}
 
 
-  /**
-   * findAll users
-   * @param getUsersParamsDto 
-   * @param limit 
-   * @param page 
-   * @returns usersInfo
-   */
-  public findAll(getUsersParamsDto: GetUsersParamsDto, limit: number, page: number,) {
-    const isAuth = this.authService.isAuth();
-    console.log(isAuth);
-    return [
-      {
-        firstName: "Wang",
-        email: "wang.gooogle@com"
-      },
-      {
-        firstName: "CUi",
-        email: "cui.gooogle@com"
-      },
-    ]
+  public async createUser(createUserDto: CreateUserDto) {
+    const existingUser = await this.usersRespository.findOne({
+      where: { email: createUserDto.email },
+    });
+
+    let newUser = this.usersRespository.create(createUserDto);
+    newUser = await this.usersRespository.save(newUser);
+    return newUser;
   }
+
+
+  // /**
+  //  * findAll users
+  //  * @param getUsersParamsDto 
+  //  * @param limit 
+  //  * @param page 
+  //  * @returns usersInfo
+  //  */
+  // public findAll(getUsersParamsDto: GetUsersParamsDto, limit: number, page: number,) {
+  //   const isAuth = this.authService.isAuth();
+  //   console.log(isAuth);
+  //   return [
+  //     {
+  //       firstName: "Wang",
+  //       email: "wang.gooogle@com"
+  //     },
+  //     {
+  //       firstName: "CUi",
+  //       email: "cui.gooogle@com"
+  //     },
+  //   ]
+  // }
 
   /**
    * findUsersById
