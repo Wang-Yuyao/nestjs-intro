@@ -1,68 +1,81 @@
-import { forwardRef, Inject, Injectable } from "@nestjs/common";
-import { GetUsersParamsDto } from "../dtos/get-users-param.dto";
-import { AuthService } from "src/auth/providers/auth.service";
-import { Repository } from "typeorm";
-import { User } from "../users.entity";
-import { InjectRepository } from "@nestjs/typeorm";
-import { CreateUserDto } from "../dtos/create-user.dto";
+import { GetUsersParamDto } from '../dtos/get-users-param.dto';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  forwardRef,
+} from '@nestjs/common';
+import { User } from '../user.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { CreateUserDto } from '../dtos/create-user.dto';
+import { AuthService } from 'src/auth/providers/auth.service';
 
 /**
- * Class to connect to Users table and perform bussiness operations
+ * Controller class for '/users' API endpoint
  */
 @Injectable()
-export class UsersService{
-
-/**
- * constructor
- */
+export class UsersService {
   constructor(
+    /**
+     * Injecting User repository into UsersService
+     * */
     @InjectRepository(User)
-    private usersRespository: Repository<User>
-  ){}
+    private usersRepository: Repository<User>,
 
+    // Injecting Auth Service
+    @Inject(forwardRef(() => AuthService))
+    private readonly authService: AuthService,
+  ) {}
 
   public async createUser(createUserDto: CreateUserDto) {
-    const existingUser = await this.usersRespository.findOne({
+    // Check if user with email exists
+    const existingUser = await this.usersRepository.findOne({
       where: { email: createUserDto.email },
     });
 
-    let newUser = this.usersRespository.create(createUserDto);
-    newUser = await this.usersRespository.save(newUser);
+    /**
+     * Handle exceptions if user exists later
+     * */
+
+    // Try to create a new user
+    // - Handle Exceptions Later
+    let newUser = this.usersRepository.create(createUserDto);
+    newUser = await this.usersRepository.save(newUser);
+
+    // Create the user
     return newUser;
   }
 
-
-  // /**
-  //  * findAll users
-  //  * @param getUsersParamsDto 
-  //  * @param limit 
-  //  * @param page 
-  //  * @returns usersInfo
-  //  */
-  // public findAll(getUsersParamsDto: GetUsersParamsDto, limit: number, page: number,) {
-  //   const isAuth = this.authService.isAuth();
-  //   console.log(isAuth);
-  //   return [
-  //     {
-  //       firstName: "Wang",
-  //       email: "wang.gooogle@com"
-  //     },
-  //     {
-  //       firstName: "CUi",
-  //       email: "cui.gooogle@com"
-  //     },
-  //   ]
-  // }
+  /**
+   * Public method responsible for handling GET request for '/users' endpoint
+   */
+  public findAll(
+    getUserParamDto: GetUsersParamDto,
+    limt: number,
+    page: number,
+  ) {
+    return [
+      {
+        firstName: 'John',
+        email: 'john@doe.com',
+      },
+      {
+        firstName: 'Alice',
+        email: 'alice@doe.com',
+      },
+    ];
+  }
 
   /**
-   * findUsersById
-   * @param id 
-   * @returns usersInfo
+   * Public method used to find one user using the ID of the user
    */
-  public findOneById (id: string) { 
+  public findOneById(id: string) {
     return {
-        firstName: "Wang",
-        email: "wang.gooogle@com"
-    }
+      id: 1234,
+      firstName: 'Alice',
+      email: 'alice@doe.com',
+    };
   }
 }

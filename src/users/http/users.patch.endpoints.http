@@ -1,7 +1,7 @@
-PATCH  http://localhost:3000/users
+PATCH http://localhost:3000/users
 Content-Type: application/json
+
 {
-  
-  "email": "wang@google.com",
+  "email": "john",
   "password": "Password123#"
 }

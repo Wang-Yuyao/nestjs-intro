@@ -15,10 +15,10 @@ import {
   ValidateNested,
 } from 'class-validator';
 
+import { CreatePostMetaOptionsDto } from '../../meta-options/dtos/create-post-meta-options.dto';
 import { Type } from 'class-transformer';
-import { postType } from '../enums/postType.enum';
 import { postStatus } from '../enums/postStatus.enum';
-import { CreatePostMetaOptionsDto } from 'src/meta-options/dto/create-post-meta-options.dto';
+import { postType } from '../enums/postType.enum';
 
 export class CreatePostDto {
   @ApiProperty({
