@@ -37,12 +37,10 @@ public async create(createPostDto: CreatePostDto) {
     ...postFields
   } = createPostDto;
 
-  // 显式创建 MetaOption 实体
   const metaOptions = metaOptionsDto
     ? this.metaOptionsRepository.create(metaOptionsDto)
     : undefined;
 
-  // 创建 Post 实体
   const post = this.postsRepository.create({
     ...postFields,
     metaOptions,
@@ -51,20 +49,15 @@ public async create(createPostDto: CreatePostDto) {
   return await this.postsRepository.save(post);
 }
 
-  public findAll(userId: string) {
+  public async findAll(userId: string) {
     const user = this.usersService.findOneById(userId);
+    
+    let posts = await this.postsRepository.find({
+      relations: {
+        metaOptions: true,
+      }
+    });
 
-    return [
-      {
-        user: user,
-        title: 'Test Tile',
-        content: 'Test Content',
-      },
-      {
-        user: user,
-        title: 'Test Tile 2',
-        content: 'Test Content 2',
-      },
-    ];
+    return posts;
   }
 }
