@@ -72,11 +72,10 @@ export class Post {
   })
   publishOn?: Date;
 
-  @OneToOne(() => MetaOption, { 
+  @OneToOne(() => MetaOption, (metaOptions) => metaOptions.post, { 
     cascade: true, 
     eager: true,
   })
-  @JoinColumn()
   metaOptions?: MetaOption;
 
   // Work on these in lecture on relationships

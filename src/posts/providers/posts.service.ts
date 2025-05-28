@@ -60,4 +60,9 @@ public async create(createPostDto: CreatePostDto) {
 
     return posts;
   }
+
+  public async delete(id: number) {
+    await this.postsRepository.delete(id);
+    return { deleted: true, id}
+  }
 }
