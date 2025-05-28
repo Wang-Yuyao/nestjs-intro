@@ -62,7 +62,13 @@ public async create(createPostDto: CreatePostDto) {
   }
 
   public async delete(id: number) {
+
+    // await this.postsRepository.delete(id)
+    // if (post && post.metaOptions) {
+    // await this.metaOptionsRepository.delete(post.metaOptions.id)
+    // }
     await this.postsRepository.delete(id);
+
     return { deleted: true, id}
   }
 }
