@@ -1,9 +1,0 @@
-## get request for app controller
-
-GET http://localhost:3000/
-GET http://localhost:3000/users
-
-GET http://localhost:3000/users/1234/
-
-
-GET http://localhost:3000/users/1234?limit=12&page=1
