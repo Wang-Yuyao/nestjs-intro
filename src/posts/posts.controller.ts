@@ -27,9 +27,9 @@ export class PostsController {
   /*
    * GET localhost:3000/posts/:userId
    */
-  @Get('/:userId')
-  public getPosts(@Param('userId') userId: string) {
-    return this.postsService.findAll(userId);
+  @Get()
+  public getPosts() {
+    return this.postsService.findAll();
   }
 
   @ApiOperation({
@@ -54,6 +54,7 @@ export class PostsController {
   @Patch()
   public updatePost(@Body() patchPostsDto: PatchPostDto) {
     console.log(patchPostsDto);
+    return this.postsService.update(patchPostsDto);
   }
 
   /**
