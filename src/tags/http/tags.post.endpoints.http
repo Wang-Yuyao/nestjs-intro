@@ -2,7 +2,7 @@ POST http://localhost:3000/tags
 Content-type: application/json
 
 {
-  "name": "javascript",
-  "slug": "javascript",
-  "description": "JavaScript is a programming language commonly used in web development."
+  "name": "javascriptv2",
+  "slug": "javascriptv2",
+  "description": "JavaScript ver2."
 }

@@ -49,7 +49,9 @@ export class Tag {
   })
   featuredImage: string;
 
-  @ManyToMany(() => Post, (post) => post.tags)
+  @ManyToMany(() => Post, (post) => post.tags, {
+    onDelete: 'CASCADE',
+  })
   posts: Post[];
 
   // https://orkhan.gitbook.io/typeorm/docs/decorator-reference
