@@ -6,11 +6,10 @@ import { Module } from '@nestjs/common';
 import { PostsModule } from './posts/posts.module';
 import { TagsModule } from './tags/tags.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-/**
- * Importing Entities
- * */
 import { UsersModule } from './users/users.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+
+const ENV = process.env.NODE_ENV;
 
 @Module({
   imports: [
@@ -18,23 +17,33 @@ import { ConfigModule } from '@nestjs/config';
     PostsModule,
     AuthModule,
     ConfigModule.forRoot({
-      isGlobal: true, // Makes the configuration available globally
-      envFilePath: '.env', // Path to your environment file
+      isGlobal: true, 
+      envFilePath: !ENV ? '.env' : `.env.${ENV}`,
     }),
     TypeOrmModule.forRootAsync({
-      imports: [],
-      inject: [],
-      useFactory: () => ({
-        type: 'postgres',
-        // entities: [User],
-        synchronize: true,
-        port: 5432,
-        username: 'postgres',
-        password: 'root',
-        host: 'localhost',
-        autoLoadEntities: true,
-        database: 'nestjs-blog',
-      }),
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        const host = configService.get<string>('DATABASE_HOST');
+        const port = parseInt(configService.get<string>('DATABASE_PORT') || '5432', 10);
+        const username = configService.get<string>('DATABASE_USER');
+        const password = configService.get<string>('DATABASE_PASSWORD');
+        const database = configService.get<string>('DATABASE_NAME');
+console.log('ENV:', ENV);
+        console.log('DB config:', { host, port, username, password, database });
+        console.log('Password type:', typeof password);
+
+        return {
+          type: 'postgres',
+          host,
+          port,
+          username,
+          password,
+          database,
+          synchronize: true,
+          autoLoadEntities: true,
+        };
+      },
     }),
     TagsModule,
     MetaOptionsModule,

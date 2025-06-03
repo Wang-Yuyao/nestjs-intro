@@ -28,7 +28,7 @@ export class UsersController {
     private readonly usersService: UsersService,
   ) {}
 
-  @Get('/:id')
+  @Get()
   @ApiOperation({
     summary: 'Fetches a list of registered users on the application',
   })

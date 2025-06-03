@@ -11,6 +11,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { AuthService } from 'src/auth/providers/auth.service';
+import { ConfigService } from '@nestjs/config';
 
 /**
  * Controller class for '/users' API endpoint
@@ -24,6 +25,7 @@ export class UsersService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
 
+    private readonly configService: ConfigService,
     // Injecting Auth Service
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
@@ -56,6 +58,8 @@ export class UsersService {
     limt: number,
     page: number,
   ) {
+    const enviroment = this.configService.get<string>('S3_BUCKET');
+    console.log('Environment:', enviroment);
     return [
       {
         firstName: 'John',
