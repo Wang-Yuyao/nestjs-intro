@@ -1,5 +1,5 @@
 import { CreatePostDto } from '../dtos/create-post.dto';
-import { Body, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Body, Injectable, NotFoundException, RequestTimeoutException } from '@nestjs/common';
 import { UsersService } from 'src/users/providers/users.service';
 import {Repository } from 'typeorm';
 import { Post } from '../post.entity';
@@ -69,10 +69,38 @@ export class PostsService {
   }
 
   public async update(patchPostDto: PatchPostDto) {
-    let tags = await this.tagService.findMultipleTags(patchPostDto.tags ?? []);
-    let post = await this.postsRepository.findOneBy({
+
+    let tags: Tag[] | undefined = undefined;
+    let post: Post | null | undefined = undefined;
+
+    try {
+       tags = await this.tagService.findMultipleTags(patchPostDto.tags ?? []);
+
+    } catch(error){
+      throw new RequestTimeoutException(
+        'There was an error while fetching tags',
+        {
+          description: 'Error connecting to the database or processing the request',  
+    }
+      );
+    }
+
+    if (!tags || tags.length !== (patchPostDto.tags?.length ?? 0)) {
+      throw new BadRequestException('Tags not found');
+    }
+    try {
+      post = await this.postsRepository.findOneBy({
       id: patchPostDto.id,
     });
+    } catch (error) {
+      throw new RequestTimeoutException(
+        'There was an error while fetching the post',
+        {
+          description: 'Error connecting to the database or processing the request',
+        }
+      );
+    }
+
     if (!post) {
       throw new NotFoundException(`Post with id ${patchPostDto.id} not found`);
     }
@@ -87,7 +115,17 @@ export class PostsService {
 
     post.tags = tags;
 
-    return await this.postsRepository.save(post);
+    try {
+      await this.postsRepository.save(post);
+    } catch (error) {
+      throw new RequestTimeoutException(
+        'There was an error while updating the post',
+        {
+          description: 'Error connecting to the database or processing the request',
+        }
+      );
+    }
+    return post;
   }
 
   /**
