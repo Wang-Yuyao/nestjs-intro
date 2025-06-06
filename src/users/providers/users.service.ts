@@ -9,12 +9,13 @@ import {
   forwardRef,
 } from '@nestjs/common';
 import { User } from '../user.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { ConfigService, ConfigType } from '@nestjs/config';
 import profileConfig from '../config/profile.config';
 import { error } from 'console';
+import { create } from 'domain';
 /**
  * Controller class for '/users' API endpoint
  */
@@ -32,6 +33,8 @@ export class UsersService {
     @Inject(profileConfig.KEY)
     private readonly profileConfiguration: ConfigType<typeof profileConfig>,
 
+    
+    private readonly dataSource: DataSource,
   ) {}
 
   public async createUser(createUserDto: CreateUserDto) {
@@ -130,5 +133,33 @@ export class UsersService {
       );
     }   
     return user;
+  }
+
+  public async createMany(createUsersDto: CreateUserDto[] ) {
+
+    let newUsers: User[] = [];
+    
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      for (let user of createUsersDto) {
+        let newUser = queryRunner.manager.create(User, user);
+        let result = await queryRunner.manager.save(newUser);
+        newUsers.push(result);
+      }
+      await queryRunner.commitTransaction();
+    } catch (error) {
+        await queryRunner.rollbackTransaction();
+        throw new RequestTimeoutException(
+          'There was an error while creating the users',
+          {
+            description: 'Error connecting to the database or processing the request',
+          }
+        );
+    } finally {
+      await queryRunner.release();
+    }
+    return await this.usersRepository.save(createUsersDto);
   }
 }

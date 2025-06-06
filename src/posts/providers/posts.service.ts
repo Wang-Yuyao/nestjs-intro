@@ -4,8 +4,6 @@ import { UsersService } from 'src/users/providers/users.service';
 import {Repository } from 'typeorm';
 import { Post } from '../post.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { MetaOption } from 'src/meta-options/meta-option.entity';
-import { User } from 'src/users/user.entity';
 import { Tag } from 'src/tags/tag.entity';
 import { TagsService } from 'src/tags/providers/tags.service';
 import { PatchPostDto } from '../dtos/patch-post.dto';
@@ -137,4 +135,6 @@ export class PostsService {
 
     return { deleted: true, id };
   }
+
+
 }
