@@ -4,6 +4,27 @@ Content-Type: application/json
 {
   "firstName": "Wang",
   "lastName": "yuyao",
-  "email": "wang@facebook.com",
+  "email": "wang@facebook1.com",
   "password": "Password123#"
+}
+
+
+POST  http://localhost:3000/users/create-many
+Content-Type: application/json
+
+{
+  "users": [
+    {
+      "firstName": "Wang",
+      "lastName": "yuyao",
+      "email": "wang@facebook4.com",
+      "password": "Password123#"
+    },
+    {
+      "firstName": "Wang",
+      "lastName": "yuyao",
+      "email": "wang@facebook5.com",
+      "password": "Password123#"
+    }
+  ]
 }

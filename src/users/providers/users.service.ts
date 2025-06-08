@@ -16,6 +16,8 @@ import { ConfigService, ConfigType } from '@nestjs/config';
 import profileConfig from '../config/profile.config';
 import { error } from 'console';
 import { create } from 'domain';
+import { UsersCreateManyProvider } from './users-create-many.provider';
+import { CreateManyUsersDto } from '../dtos/create-many-users.dto';
 /**
  * Controller class for '/users' API endpoint
  */
@@ -35,6 +37,8 @@ export class UsersService {
 
     
     private readonly dataSource: DataSource,
+
+    private readonly usersCreateManyProvider: UsersCreateManyProvider,
   ) {}
 
   public async createUser(createUserDto: CreateUserDto) {
@@ -135,31 +139,7 @@ export class UsersService {
     return user;
   }
 
-  public async createMany(createUsersDto: CreateUserDto[] ) {
-
-    let newUsers: User[] = [];
-    
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-    try {
-      for (let user of createUsersDto) {
-        let newUser = queryRunner.manager.create(User, user);
-        let result = await queryRunner.manager.save(newUser);
-        newUsers.push(result);
-      }
-      await queryRunner.commitTransaction();
-    } catch (error) {
-        await queryRunner.rollbackTransaction();
-        throw new RequestTimeoutException(
-          'There was an error while creating the users',
-          {
-            description: 'Error connecting to the database or processing the request',
-          }
-        );
-    } finally {
-      await queryRunner.release();
-    }
-    return await this.usersRepository.save(createUsersDto);
+  public async createMany(createManyUsersDto: CreateManyUsersDto ) {
+    return await this.usersCreateManyProvider.createMany(createManyUsersDto);
   }
 }
