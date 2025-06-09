@@ -7,6 +7,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Tag } from 'src/tags/tag.entity';
 import { TagsService } from 'src/tags/providers/tags.service';
 import { PatchPostDto } from '../dtos/patch-post.dto';
+import { GetPostsDto } from '../dtos/get-posts.dto';
+import { PaginationProvider } from 'src/common/pagination/providers/pagination.provider';
+import { Paginated } from 'src/common/pagination/interfaces/paginated.interface';
 
 @Injectable()
 export class PostsService {
@@ -23,6 +26,8 @@ export class PostsService {
     private readonly postsRepository: Repository<Post>,
 
     private readonly tagService: TagsService,
+
+    private readonly paginationProvider: PaginationProvider,
   ) {}
 
   /**
@@ -53,15 +58,17 @@ export class PostsService {
   /**
    * Method to find all posts
    */
-  public async findAll() {
-    // find all posts
-    let posts = await this.postsRepository.find({
-      relations: {
-        metaOptions: true,
-        // author: true,
-        // tags: true,
+  public async findAll(
+    postQuery: GetPostsDto,
+    userId: string
+  ): Promise<Paginated<Post>> {
+    let posts = await this.paginationProvider.paginateQuery(
+      {
+        page: postQuery.page,
+        limit: postQuery.limit,
       },
-    });
+      this.postsRepository
+    );
 
     return posts;
   }
