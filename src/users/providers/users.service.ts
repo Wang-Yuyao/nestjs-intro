@@ -18,6 +18,7 @@ import { error } from 'console';
 import { create } from 'domain';
 import { UsersCreateManyProvider } from './users-create-many.provider';
 import { CreateManyUsersDto } from '../dtos/create-many-users.dto';
+import { CreateUserProvider } from './create-user.provider';
 /**
  * Controller class for '/users' API endpoint
  */
@@ -39,53 +40,12 @@ export class UsersService {
     private readonly dataSource: DataSource,
 
     private readonly usersCreateManyProvider: UsersCreateManyProvider,
+
+    private readonly createUserProvider: CreateUserProvider,
   ) {}
 
   public async createUser(createUserDto: CreateUserDto) {
-
-    let existingUser: User | null = null;
-
-    try {
-
-      existingUser =  await this.usersRepository.findOne({
-        where: { email: createUserDto.email },
-    });
-    } catch (error) {
-      // Handle exceptions if user exists later
-      throw new RequestTimeoutException(
-
-        'There was an error while checking if user exists',
-        {
-          description: 'Error connecting to the database or processing the request',
-        }
-      );
-    }
-
-    if (existingUser) {
-      // If user already exists, throw an exception
-      throw new BadRequestException(
-        'User with this email already exists',
-        {
-          description: 'User with this email already exists in the database',
-        }
-      );
-    }
-
-    let newUser = this.usersRepository.create(createUserDto);
-
-    try{
-      newUser = await this.usersRepository.save(newUser);
-    } catch (error) {
-      throw new RequestTimeoutException(
-        'There was an error while creating the user',
-        {
-          description: 'Error connecting to the database or processing the request',      
-    }
-      );
-    } 
-
-    // Create the user
-    return newUser;
+    return this.createUserProvider.createUser(createUserDto);
   }
 
   /**
