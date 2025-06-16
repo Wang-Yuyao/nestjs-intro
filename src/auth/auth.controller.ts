@@ -1,6 +1,6 @@
 import { SignInDto } from './dtos/signin.dto';
 import { AuthService } from './providers/auth.service';
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 
 @Controller('auth')
 export class AuthController {
@@ -12,6 +12,7 @@ export class AuthController {
   ) {}
 
   @Post('sign-in')
+  @HttpCode(HttpStatus.OK) // Setting HTTP status code to 200 for successful sign-in
   public async signIn(@Body() signInDto: SignInDto) {
     /*
      * Calling the signIn method from AuthService
