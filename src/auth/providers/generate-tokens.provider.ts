@@ -17,7 +17,7 @@ export class GenerateTokensProvider {
   public async signToken<T>(
     userId: number, expiresIn: number, payload?: T
   ) {  
-    await this.jwtService.signAsync(
+   return await this.jwtService.signAsync(
           {
             sub: userId,
             ... payload, // Spread the payload if provided
@@ -43,8 +43,7 @@ export class GenerateTokensProvider {
         { email: user.email }
       ),
     ])
-    console.log('Access Token:', accessToken);
-    console.log('Refresh Token:', refreshToken);
+
     return {
       accessToken,
       refreshToken,
