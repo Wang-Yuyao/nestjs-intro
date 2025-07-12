@@ -16,6 +16,9 @@ export class SignInProvider {
   public async signIn(signInDto: SignInDto) {
     let user = await this.usersService.findOneByEmail(signInDto.email,);
     let isEqual : boolean = false;
+    if (!user.password) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
     try {
       isEqual = await this.hashingProvider.comparePassword(
         signInDto.password,
