@@ -24,20 +24,37 @@ export class GoogleAuthenticationService implements OnModuleInit {
   }
 
   public async authentication(googleTokenDto: GoogleTokenDto) {
-    const loginTicket = await this.oauthClinet.verifyIdToken({
-      idToken: googleTokenDto.token,
-    });
-    console.log('loginTicket', loginTicket);
-    const payload = loginTicket.getPayload();
-    if (!payload) {
-      throw new Error('Invalid Google token payload');
-    }
-    const { email, sub: googleId, given_name: firstName, family_name: lastName } = payload;
+    try {
+      const loginTicket = await this.oauthClinet.verifyIdToken({
+        idToken: googleTokenDto.token,
+      });
+      console.log('loginTicket', loginTicket);
+      const payload = loginTicket.getPayload();
+      if (!payload) {
+        throw new Error('Invalid Google token payload');
+      }
+      const { email, sub: googleId, given_name: firstName, family_name: lastName } = payload;
 
-    const user = await this.usersService.findOneByGoogleId(googleId);
+      if (!email || !googleId || !firstName || !lastName) {
+        throw new Error('Missing required user information from Google payload');
+      }
 
-    if (user) {
-      return this.generateTokenProvider.generateTokens(user);
+      const user = await this.usersService.findOneByGoogleId(googleId);
+
+      if (user) {
+        return this.generateTokenProvider.generateTokens(user);
+      }
+
+      const newUser = await this.usersService.createGoogleUser({
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+        googleId: googleId,
+      });
+      return this.generateTokenProvider.generateTokens(newUser);
+    } catch (error) {
+      console.error('Error during Google authentication:', error);
+      throw new Error('Google authentication failed');
     }
   }
 }
