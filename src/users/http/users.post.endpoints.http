@@ -3,7 +3,7 @@ Content-Type: application/json
 {
   "firstName": "Mark",
   "lastName": "yuyao",
-  "email": "Mark@facebook1.com",
+  "email": "Mark@facebook12.com",
   "password": "Password123#"
 }
 
