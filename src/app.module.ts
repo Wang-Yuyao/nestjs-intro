@@ -22,6 +22,7 @@ import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { AccessTokenGuard } from './auth/guards/access-token/access-token.guard';
 import { AuthenticationGuard } from './auth/guards/authentication/authentication.guard';
 import { DataResponseInterceptor } from './common/interceptors/data-response/data-response.interceptor';
+import { UploadsModule } from './uploads/uploads.module';
 
 // Get the current NODE_ENV
 const ENV = process.env.NODE_ENV;
@@ -58,6 +59,7 @@ console.log(`Current environment: ${ENV}`);
     TagsModule,
     MetaOptionsModule,
     PaginationModule,
+    UploadsModule,
   ],
   controllers: [AppController],
   providers: [AppService,
