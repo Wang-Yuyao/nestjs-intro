@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { S3 } from 'aws-sdk';
-import path from 'path';
-import appConfig from 'src/config/app.config';
+import * as path from 'path';
 import { v4 as uuid4 } from 'uuid';
 
 @Injectable()

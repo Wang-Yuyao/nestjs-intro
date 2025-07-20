@@ -27,6 +27,8 @@ export class UploadsController {
   })
   @Post('file')
   public uploadFile(@UploadedFile() file: Express.Multer.File) {
+      console.log('Received file:', file);
+
     // Here you would typically handle the file upload logic, e.g., saving the file to a storage service.
     return this.uploadsService.uploadFile(file);
   }
