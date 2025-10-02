@@ -1,98 +1,83 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+📌 プロジェクト概要（NestJS 独学成果物）
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+このプロジェクトは、NestJSを独学で学習しながら、バックエンドアプリケーションの基本から応用機能まで一通り実装した学習成果物です。5月中旬から7月下旬にかけて、以下のような機能を段階的に完成させました。
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+✅ 実装した主な機能
+1️⃣ 認証機能
 
-## Description
+JWT を利用したサインイン機能の実装
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+パスワードのハッシュ化とユーザー作成
 
-## Project setup
+AuthGuard / AuthenticationGuard / Token Guard の導入
 
-```bash
-$ yarn install
-```
+Refresh Token 機能の追加
 
-## Compile and run the project
+Google OAuth 認証
 
-```bash
-# development
-$ yarn run start
+認証済みユーザー取得用デコレーター（ActiveUserDecorator）実装
 
-# watch mode
-$ yarn run start:dev
+Googleログイン後のユーザーデータ保存機能
 
-# production mode
-$ yarn run start:prod
-```
+2️⃣ API・DTO・バリデーション
 
-## Run tests
+DTO作成、Pipe・Decorator・Validation実装
 
-```bash
-# unit tests
-$ yarn run test
+Swagger によるAPIドキュメント作成
 
-# e2e tests
-$ yarn run test:e2e
+PartialType / Nested DTO対応
 
-# test coverage
-$ yarn run test:cov
-```
+コンフィグ設定 .env の導入と秘匿化対応
 
-## Deployment
+3️⃣ DB / TypeORM 関連
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+Entity定義とDB連携確認
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+TypeORM導入
 
-```bash
-$ yarn install -g @nestjs/mau
-$ mau deploy
-```
+CRUD実装（GET/POST/DELETE）
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Pagination対応
 
-## Resources
+リレーション
 
-Check out a few resources that may come in handy when working with NestJS:
+OneToMany / ManyToOne / ManyToMany
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Cascade Create / Cascade Delete / Eager Fetch
 
-## Support
+Soft Delete対応
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Transaction処理 & エラーハンドリング実装
 
-## Stay in touch
+4️⃣ エラーハンドリング・共通処理
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Exception Filter / Interceptor実装
 
-## License
+エラーハンドリング統合
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+5️⃣ 外部連携
+
+AWS S3 へのファイルアップロード機能
+（Service実装〜最終アップロードまで完了）
+
+✅ 使用技術・ライブラリ
+
+NestJS
+
+TypeORM
+
+Swagger / Compodoc
+
+JWT / Passport / Guards
+
+Google OAuth
+
+AWS S3
+
+dotenv
+
+🛠 NestJSとは？
+
+NestJS は、Node.js 上で構築する サーバーサイドアプリケーション向けのフレームワークです。
+TypeScript を前提とし、モジュール構造・DI（依存性注入）・デコレーター構文など、Angularに似た設計思想で構成されています。
+保守性・拡張性が高く、REST API・マイクロサービス・認証機能の実装などに適しています。
