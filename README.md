@@ -15,9 +15,19 @@ Refresh Token 機能の追加
 
 Google OAuth 認証
 
+<img width="1505" height="602" alt="image" src="https://github.com/user-attachments/assets/8a2853cb-5ecc-4094-9b05-641c54f92b4a" />
+
+<img width="793" height="936" alt="image" src="https://github.com/user-attachments/assets/713574bf-8646-48e5-8f9d-0594eb901c47" />
+
+<img width="1246" height="772" alt="image" src="https://github.com/user-attachments/assets/8fdb2a0b-ffc0-4938-b977-4a9338ccbbb4" />
+
+ログイン成功されました。
+
 認証済みユーザー取得用デコレーター（ActiveUserDecorator）実装
 
 Googleログイン後のユーザーデータ保存機能
+
+
 
 2️⃣ API・DTO・バリデーション
 
@@ -72,7 +82,12 @@ JWT / Passport / Guards
 
 Google OAuth
 
-AWS S3
+
+
+AWS S3　に　ファイルアップロード
+
+<img width="2337" height="813" alt="image" src="https://github.com/user-attachments/assets/3ace124b-9ffa-40ac-955d-60b03f850543" />
+
 
 dotenv
 
